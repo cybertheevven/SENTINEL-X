@@ -2,7 +2,7 @@
 <h1 align="center">SENTINEL-X</h1>
 <p align="center"><b>AI-assisted digital forensics &amp; incident investigation</b> for Kali / Debian Linux<br>
 Defensive - read-only - evidence-based. Author: <b>THEEVVEN</b></p>
-<p align="center"><a href="https://github.com/theevven/SENTINEL-X/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/theevven/SENTINEL-X/actions/workflows/ci.yml/badge.svg"></a>
+<p align="center"><a href="https://github.com/cybertheevven/SENTINEL-X/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/cybertheevven/SENTINEL-X/actions/workflows/ci.yml/badge.svg"></a>
 <img alt="Python" src="https://img.shields.io/badge/python-3.10%2B-19e3d1"> <img alt="License" src="https://img.shields.io/badge/license-MIT-blue"></p>
 
 SENTINEL-X turns server logs into an **investigation**: it verifies evidence (SHA-256), detects suspicious activity,
@@ -13,7 +13,7 @@ reconstructs an **attack path and timeline**, correlates web and SSH activity, a
 
 ## Try it in 30 seconds
 ```bash
-git clone https://github.com/theevven/SENTINEL-X.git && cd SENTINEL-X
+git clone https://github.com/cybertheevven/SENTINEL-X.git && cd SENTINEL-X
 ./scripts/install.sh          # private venv, works with Kali's externally-managed Python
 sentinel-x demo               # synthetic logs -> analysis -> PDF + HTML + JSON in ./sentinel-x-demo/reports
 xdg-open sentinel-x-demo/reports/DEMO_report.html
