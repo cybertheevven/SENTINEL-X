@@ -63,3 +63,6 @@ docker compose build        # Dockerfile provided
 ```
 ## Legal
 Use only on systems and evidence you are authorized to analyze. MIT License. See [SECURITY.md](SECURITY.md).
+## Disclaimer
+SENTINEL-X is intended for authorized and educational use only.
+The author is not responsible for misuse.
