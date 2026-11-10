@@ -1,0 +1,3 @@
+- [ ] Tests added/updated and `python -m unittest discover -s tests -t . -p "test_*.py"` passes
+- [ ] No real evidence, secrets or personal data in the change
+- [ ] Docs/STATUS updated if behavior changed

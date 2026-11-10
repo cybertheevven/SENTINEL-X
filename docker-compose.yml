@@ -1,0 +1,11 @@
+services:
+  sentinel-x:
+    build: .
+    image: sentinel-x:0.2.0
+    volumes:
+      - ./cases:/data/cases
+      - ./evidence:/evidence:ro   # evidence is mounted read-only
+    # Reach Ollama running on the host (Linux):
+    extra_hosts: ["host.docker.internal:host-gateway"]
+    environment:
+      SENTINEL_X_OLLAMA_HOST: http://host.docker.internal:11434

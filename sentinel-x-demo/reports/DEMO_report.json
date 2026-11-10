@@ -1,0 +1,1148 @@
+{
+  "report_generated_at": "2026-11-10T12:22:27+00:00",
+  "tool": "SENTINEL-X 0.2.0",
+  "case": {
+    "name": "DEMO",
+    "created_at": "2026-11-10T12:22:27+00:00",
+    "created_by": "cyber",
+    "author": "THEEVVEN",
+    "tool_version": "0.2.0"
+  },
+  "evidence": [
+    {
+      "evidence_id": "EV-0001",
+      "filename": "access.log",
+      "original_path": "/home/pc/sx2/SENTINEL-X/sentinel-x-demo/logs/access.log",
+      "working_copy": "evidence/EV-0001_access.log",
+      "size_bytes": 21276,
+      "sha256": "59f4fccc8d305d424cbea3a69c9a868d6ca86d1affdae66359e3f26d3a57ed10",
+      "collected_at": "2026-11-10T12:22:27+00:00",
+      "collected_by": "cyber",
+      "custody": [
+        {
+          "ts": "2026-11-10T12:22:27+00:00",
+          "action": "collected",
+          "by": "cyber",
+          "note": "Read-only working copy created; SHA-256 verified"
+        }
+      ]
+    },
+    {
+      "evidence_id": "EV-0002",
+      "filename": "auth.log",
+      "original_path": "/home/pc/sx2/SENTINEL-X/sentinel-x-demo/logs/auth.log",
+      "working_copy": "evidence/EV-0002_auth.log",
+      "size_bytes": 2130,
+      "sha256": "7bd4c3d12d8b7f1aeca292dcfe2f61668d8216e550dfc9bf85fa56ca7dfee3bd",
+      "collected_at": "2026-11-10T12:22:27+00:00",
+      "collected_by": "cyber",
+      "custody": [
+        {
+          "ts": "2026-11-10T12:22:27+00:00",
+          "action": "collected",
+          "by": "cyber",
+          "note": "Read-only working copy created; SHA-256 verified"
+        }
+      ]
+    }
+  ],
+  "analysis": {
+    "generated_at": "2026-11-10T12:22:27+00:00",
+    "tool_version": "0.2.0",
+    "integrity": [
+      {
+        "evidence_id": "EV-0001",
+        "ok": true,
+        "detail": "SHA-256 matches manifest"
+      },
+      {
+        "evidence_id": "EV-0002",
+        "ok": true,
+        "detail": "SHA-256 matches manifest"
+      }
+    ],
+    "parse_stats": [
+      {
+        "evidence_id": "EV-0001",
+        "file": "access.log",
+        "lines": 160,
+        "parsed": 159,
+        "unparsed": 1,
+        "format": "web"
+      },
+      {
+        "evidence_id": "EV-0002",
+        "file": "auth.log",
+        "lines": 22,
+        "parsed": 22,
+        "unparsed": 0,
+        "events": 20,
+        "year_assumed": 2026,
+        "format": "auth"
+      }
+    ],
+    "unsupported_evidence": [],
+    "stats": {
+      "total_requests": 159,
+      "unique_ips": 5,
+      "first_event": "2026-11-03T08:00:10+00:00",
+      "last_event": "2026-11-03T10:58:49+00:00",
+      "status_counts": {
+        "200": 124,
+        "302": 1,
+        "401": 8,
+        "403": 3,
+        "404": 22,
+        "500": 1
+      },
+      "top_ips": [
+        [
+          "198.51.100.23",
+          39
+        ],
+        [
+          "203.0.113.11",
+          38
+        ],
+        [
+          "203.0.113.50",
+          32
+        ],
+        [
+          "203.0.113.10",
+          27
+        ],
+        [
+          "203.0.113.12",
+          23
+        ]
+      ],
+      "top_paths": [
+        [
+          "/",
+          28
+        ],
+        [
+          "/products.php",
+          26
+        ],
+        [
+          "/contact",
+          26
+        ],
+        [
+          "/about",
+          21
+        ],
+        [
+          "/index.php",
+          21
+        ],
+        [
+          "/wp-login.php",
+          9
+        ],
+        [
+          "/wp-content/uploads/2026/11/shell.php",
+          2
+        ],
+        [
+          "/admin",
+          1
+        ],
+        [
+          "/backup",
+          1
+        ],
+        [
+          "/.env",
+          1
+        ]
+      ]
+    },
+    "auth_stats": {
+      "events": 20,
+      "failed": 11,
+      "accepted": 5,
+      "unique_ips": 2,
+      "first_event": "2026-11-03T08:14:00+00:00",
+      "last_event": "2026-11-03T13:14:00+00:00"
+    },
+    "findings": [
+      {
+        "id": "F-0001",
+        "type": "content_enumeration",
+        "timestamp": "2026-11-03T10:00:00+00:00",
+        "evidence_id": "EV-0001",
+        "file": "access.log",
+        "line": 81,
+        "ip": "198.51.100.23",
+        "severity": "Medium",
+        "confidence": "High Confidence",
+        "classification": "Observed",
+        "description": "22 HTTP 404 responses from one IP; >= 15 within 60s (directory/content discovery pattern).",
+        "details": {
+          "total_404": 22,
+          "path": "/admin",
+          "status": 404,
+          "user_agent": "Mozilla/5.00 (Nikto/2.5.0) (Evasions:None) (Test:Port Scanner)",
+          "method": "GET"
+        }
+      },
+      {
+        "id": "F-0002",
+        "type": "scanner_user_agent",
+        "timestamp": "2026-11-03T10:00:00+00:00",
+        "evidence_id": "EV-0001",
+        "file": "access.log",
+        "line": 81,
+        "ip": "198.51.100.23",
+        "severity": "Medium",
+        "confidence": "High Confidence",
+        "classification": "Observed",
+        "description": "User-Agent matches known scanning/attack tool 'nikto' (first occurrence).",
+        "details": {
+          "path": "/admin",
+          "status": 404,
+          "user_agent": "Mozilla/5.00 (Nikto/2.5.0) (Evasions:None) (Test:Port Scanner)",
+          "method": "GET"
+        }
+      },
+      {
+        "id": "F-0003",
+        "type": "sensitive_path_access",
+        "timestamp": "2026-11-03T10:00:01+00:00",
+        "evidence_id": "EV-0001",
+        "file": "access.log",
+        "line": 82,
+        "ip": "198.51.100.23",
+        "severity": "Low",
+        "confidence": "Medium Confidence",
+        "classification": "Observed",
+        "description": "Request targets a sensitive path (config, VCS, backup, admin tooling). Response status 404 suggests it did not succeed (not proven).",
+        "details": {
+          "path": "/backup",
+          "status": 404,
+          "user_agent": "Mozilla/5.00 (Nikto/2.5.0) (Evasions:None) (Test:Port Scanner)",
+          "method": "GET"
+        }
+      },
+      {
+        "id": "F-0004",
+        "type": "sensitive_path_access",
+        "timestamp": "2026-11-03T10:00:02+00:00",
+        "evidence_id": "EV-0001",
+        "file": "access.log",
+        "line": 84,
+        "ip": "198.51.100.23",
+        "severity": "Low",
+        "confidence": "Medium Confidence",
+        "classification": "Observed",
+        "description": "Request targets a sensitive path (config, VCS, backup, admin tooling). Response status 403 suggests it did not succeed (not proven).",
+        "details": {
+          "path": "/.env",
+          "status": 403,
+          "user_agent": "Mozilla/5.00 (Nikto/2.5.0) (Evasions:None) (Test:Port Scanner)",
+          "method": "GET"
+        }
+      },
+      {
+        "id": "F-0005",
+        "type": "sensitive_path_access",
+        "timestamp": "2026-11-03T10:00:03+00:00",
+        "evidence_id": "EV-0001",
+        "file": "access.log",
+        "line": 85,
+        "ip": "198.51.100.23",
+        "severity": "Low",
+        "confidence": "Medium Confidence",
+        "classification": "Observed",
+        "description": "Request targets a sensitive path (config, VCS, backup, admin tooling). Response status 403 suggests it did not succeed (not proven).",
+        "details": {
+          "path": "/.git/config",
+          "status": 403,
+          "user_agent": "Mozilla/5.00 (Nikto/2.5.0) (Evasions:None) (Test:Port Scanner)",
+          "method": "GET"
+        }
+      },
+      {
+        "id": "F-0006",
+        "type": "sensitive_path_access",
+        "timestamp": "2026-11-03T10:00:04+00:00",
+        "evidence_id": "EV-0001",
+        "file": "access.log",
+        "line": 86,
+        "ip": "198.51.100.23",
+        "severity": "Low",
+        "confidence": "Medium Confidence",
+        "classification": "Observed",
+        "description": "Request targets a sensitive path (config, VCS, backup, admin tooling). Response status 403 suggests it did not succeed (not proven).",
+        "details": {
+          "path": "/phpmyadmin/",
+          "status": 403,
+          "user_agent": "Mozilla/5.00 (Nikto/2.5.0) (Evasions:None) (Test:Port Scanner)",
+          "method": "GET"
+        }
+      },
+      {
+        "id": "F-0007",
+        "type": "scanner_user_agent",
+        "timestamp": "2026-11-03T10:10:00+00:00",
+        "evidence_id": "EV-0001",
+        "file": "access.log",
+        "line": 113,
+        "ip": "198.51.100.23",
+        "severity": "Medium",
+        "confidence": "High Confidence",
+        "classification": "Observed",
+        "description": "User-Agent matches known scanning/attack tool 'sqlmap' (first occurrence).",
+        "details": {
+          "path": "/products.php?id=3'+OR+1=1--",
+          "status": 500,
+          "user_agent": "sqlmap/1.8",
+          "method": "GET"
+        }
+      },
+      {
+        "id": "F-0008",
+        "type": "sql_injection_attempt",
+        "timestamp": "2026-11-03T10:10:00+00:00",
+        "evidence_id": "EV-0001",
+        "file": "access.log",
+        "line": 113,
+        "ip": "198.51.100.23",
+        "severity": "High",
+        "confidence": "Medium Confidence",
+        "classification": "Observed",
+        "description": "Request contains SQL injection patterns. Response status 500 suggests it did not succeed (not proven).",
+        "details": {
+          "path": "/products.php?id=3'+OR+1=1--",
+          "status": 500,
+          "user_agent": "sqlmap/1.8",
+          "method": "GET"
+        }
+      },
+      {
+        "id": "F-0009",
+        "type": "sql_injection_attempt",
+        "timestamp": "2026-11-03T10:10:20+00:00",
+        "evidence_id": "EV-0001",
+        "file": "access.log",
+        "line": 114,
+        "ip": "198.51.100.23",
+        "severity": "High",
+        "confidence": "Medium Confidence",
+        "classification": "Observed",
+        "description": "Request contains SQL injection patterns. Response status 200 alone does not prove the attempt succeeded.",
+        "details": {
+          "path": "/products.php?id=3+UNION+SELECT+1,user(),3--",
+          "status": 200,
+          "user_agent": "sqlmap/1.8",
+          "method": "GET"
+        }
+      },
+      {
+        "id": "F-0010",
+        "type": "path_traversal_attempt",
+        "timestamp": "2026-11-03T10:10:40+00:00",
+        "evidence_id": "EV-0001",
+        "file": "access.log",
+        "line": 115,
+        "ip": "198.51.100.23",
+        "severity": "High",
+        "confidence": "High Confidence",
+        "classification": "Observed",
+        "description": "Request contains path traversal patterns. Response status 200 alone does not prove the attempt succeeded.",
+        "details": {
+          "path": "/download.php?file=../../../../etc/passwd",
+          "status": 200,
+          "user_agent": "sqlmap/1.8",
+          "method": "GET"
+        }
+      },
+      {
+        "id": "F-0011",
+        "type": "bruteforce_login_attempts",
+        "timestamp": "2026-11-03T10:15:00+00:00",
+        "evidence_id": "EV-0001",
+        "file": "access.log",
+        "line": 119,
+        "ip": "198.51.100.23",
+        "severity": "High",
+        "confidence": "High Confidence",
+        "classification": "Observed",
+        "description": "8 failed login responses (401/403) from one IP; >= 5 within 300s.",
+        "details": {
+          "failed_count": 8,
+          "last_failure": "2026-11-03T10:15:42+00:00",
+          "path": "/wp-login.php",
+          "status": 401,
+          "user_agent": "Mozilla/5.0 (X11; Linux x86_64) Firefox/126.0",
+          "method": "POST"
+        }
+      },
+      {
+        "id": "F-0012",
+        "type": "possible_login_success_after_failures",
+        "timestamp": "2026-11-03T10:16:10+00:00",
+        "evidence_id": "EV-0001",
+        "file": "access.log",
+        "line": 128,
+        "ip": "198.51.100.23",
+        "severity": "High",
+        "confidence": "Medium Confidence",
+        "classification": "Inferred",
+        "description": "Login-path POST returned 302 after 8 failures from the same IP. Web logs cannot confirm authentication; verify in application/auth logs.",
+        "details": {
+          "failed_before": 8,
+          "path": "/wp-login.php",
+          "status": 302,
+          "user_agent": "Mozilla/5.0 (X11; Linux x86_64) Firefox/126.0",
+          "method": "POST"
+        }
+      },
+      {
+        "id": "F-0013",
+        "type": "possible_web_shell",
+        "timestamp": "2026-11-03T10:19:10+00:00",
+        "evidence_id": "EV-0001",
+        "file": "access.log",
+        "line": 131,
+        "ip": "198.51.100.23",
+        "severity": "Critical",
+        "confidence": "Medium Confidence",
+        "classification": "Inferred",
+        "description": "Script request with command-execution parameters or web-shell-like name. Response status 200 alone does not prove the attempt succeeded.",
+        "details": {
+          "path": "/wp-content/uploads/2026/11/shell.php",
+          "status": 200,
+          "user_agent": "Mozilla/5.0 (X11; Linux x86_64) Firefox/126.0",
+          "method": "POST"
+        }
+      },
+      {
+        "id": "F-0014",
+        "type": "possible_web_shell",
+        "timestamp": "2026-11-03T10:19:40+00:00",
+        "evidence_id": "EV-0001",
+        "file": "access.log",
+        "line": 132,
+        "ip": "198.51.100.23",
+        "severity": "Critical",
+        "confidence": "Medium Confidence",
+        "classification": "Inferred",
+        "description": "Script request with command-execution parameters or web-shell-like name. Response status 200 alone does not prove the attempt succeeded.",
+        "details": {
+          "path": "/wp-content/uploads/2026/11/shell.php?cmd=id",
+          "status": 200,
+          "user_agent": "Mozilla/5.0 (X11; Linux x86_64) Firefox/126.0",
+          "method": "GET"
+        }
+      },
+      {
+        "id": "F-0015",
+        "type": "ssh_user_enumeration",
+        "timestamp": "2026-11-03T10:30:00+00:00",
+        "evidence_id": "EV-0002",
+        "file": "auth.log",
+        "line": 5,
+        "ip": "198.51.100.23",
+        "severity": "Medium",
+        "confidence": "Medium Confidence",
+        "classification": "Observed",
+        "description": "4 distinct non-existent usernames tried from one IP (admin, oracle, test, ubuntu).",
+        "details": {
+          "invalid_users": [
+            "admin",
+            "oracle",
+            "test",
+            "ubuntu"
+          ],
+          "user": "admin",
+          "method": "-",
+          "source": "ssh"
+        }
+      },
+      {
+        "id": "F-0016",
+        "type": "ssh_bruteforce_attempts",
+        "timestamp": "2026-11-03T10:30:00+00:00",
+        "evidence_id": "EV-0002",
+        "file": "auth.log",
+        "line": 6,
+        "ip": "198.51.100.23",
+        "severity": "High",
+        "confidence": "High Confidence",
+        "classification": "Observed",
+        "description": "10 failed SSH authentications from one IP; >= 5 within 300s. Accounts tried: admin, deploy, oracle, root, test, ubuntu.",
+        "details": {
+          "failed_count": 10,
+          "users_tried": [
+            "admin",
+            "deploy",
+            "oracle",
+            "root",
+            "test",
+            "ubuntu"
+          ],
+          "user": "admin",
+          "method": "password",
+          "source": "ssh"
+        }
+      },
+      {
+        "id": "F-0017",
+        "type": "cross_source_correlation",
+        "timestamp": "2026-11-03T10:30:40+00:00",
+        "evidence_id": "EV-0002",
+        "file": "auth.log",
+        "line": 19,
+        "ip": "198.51.100.23",
+        "severity": "High",
+        "confidence": "Medium Confidence",
+        "classification": "Inferred",
+        "description": "IP 198.51.100.23 appears in web attack activity (first: EV-0001:81, scanner_user_agent) and also has a logged successful SSH login (EV-0002:19). The same actor is plausible but not proven (shared or NAT addresses are possible).",
+        "details": {
+          "web_first": "EV-0001:81",
+          "ssh_success": "EV-0002:19",
+          "source": "correlation"
+        }
+      },
+      {
+        "id": "F-0018",
+        "type": "ssh_login_success_after_failures",
+        "timestamp": "2026-11-03T10:30:40+00:00",
+        "evidence_id": "EV-0002",
+        "file": "auth.log",
+        "line": 19,
+        "ip": "198.51.100.23",
+        "severity": "High",
+        "confidence": "High Confidence",
+        "classification": "Observed",
+        "description": "sshd logged a SUCCESSFUL login for 'deploy' (password) after 10 failed attempts from the same IP. The login is recorded fact; attribution of the actor and intent remain inferred.",
+        "details": {
+          "failed_before": 10,
+          "user": "deploy",
+          "method": "password",
+          "source": "ssh"
+        }
+      }
+    ],
+    "initial_access": {
+      "status": "Hypothesis",
+      "summary": "Most likely initial access (hypothesis): Exploitation of a web application (SQL injection) from 198.51.100.23",
+      "hypothesis": "Exploitation of a web application (SQL injection)",
+      "confidence": "Medium Confidence",
+      "classification": "Inferred",
+      "first_suspicious_event": {
+        "finding_id": "F-0008",
+        "timestamp": "2026-11-03T10:10:00+00:00",
+        "ip": "198.51.100.23",
+        "target": "/products.php?id=3'+OR+1=1--",
+        "evidence_id": "EV-0001",
+        "line": 113
+      },
+      "supporting_findings": [
+        "F-0008",
+        "F-0009",
+        "F-0010",
+        "F-0012",
+        "F-0013",
+        "F-0014",
+        "F-0018"
+      ],
+      "confirmed_access": [
+        {
+          "finding_id": "F-0018",
+          "timestamp": "2026-11-03T10:30:40+00:00",
+          "ip": "198.51.100.23",
+          "user": "deploy",
+          "evidence_id": "EV-0002",
+          "line": 19
+        }
+      ],
+      "contradicting_evidence": [],
+      "missing_evidence": [
+        "Application and database logs (to confirm exploit success)",
+        "File integrity data or reference hashes (new/modified files)",
+        "Process, cron and network-flow records (post-exploitation activity)"
+      ]
+    },
+    "timeline": [
+      {
+        "timestamp": "2026-11-03T10:00:00+00:00",
+        "phase": "Reconnaissance",
+        "finding_id": "F-0001",
+        "type": "content_enumeration",
+        "ip": "198.51.100.23",
+        "severity": "Medium",
+        "confidence": "High Confidence",
+        "classification": "Observed",
+        "evidence_id": "EV-0001",
+        "line": 81,
+        "summary": "22 HTTP 404 responses from one IP; >= 15 within 60s (directory/content discovery pattern)."
+      },
+      {
+        "timestamp": "2026-11-03T10:00:00+00:00",
+        "phase": "Reconnaissance",
+        "finding_id": "F-0002",
+        "type": "scanner_user_agent",
+        "ip": "198.51.100.23",
+        "severity": "Medium",
+        "confidence": "High Confidence",
+        "classification": "Observed",
+        "evidence_id": "EV-0001",
+        "line": 81,
+        "summary": "User-Agent matches known scanning/attack tool 'nikto' (first occurrence)."
+      },
+      {
+        "timestamp": "2026-11-03T10:00:01+00:00",
+        "phase": "Reconnaissance",
+        "finding_id": "F-0003",
+        "type": "sensitive_path_access",
+        "ip": "198.51.100.23",
+        "severity": "Low",
+        "confidence": "Medium Confidence",
+        "classification": "Observed",
+        "evidence_id": "EV-0001",
+        "line": 82,
+        "summary": "Request targets a sensitive path (config, VCS, backup, admin tooling)."
+      },
+      {
+        "timestamp": "2026-11-03T10:00:02+00:00",
+        "phase": "Reconnaissance",
+        "finding_id": "F-0004",
+        "type": "sensitive_path_access",
+        "ip": "198.51.100.23",
+        "severity": "Low",
+        "confidence": "Medium Confidence",
+        "classification": "Observed",
+        "evidence_id": "EV-0001",
+        "line": 84,
+        "summary": "Request targets a sensitive path (config, VCS, backup, admin tooling)."
+      },
+      {
+        "timestamp": "2026-11-03T10:00:03+00:00",
+        "phase": "Reconnaissance",
+        "finding_id": "F-0005",
+        "type": "sensitive_path_access",
+        "ip": "198.51.100.23",
+        "severity": "Low",
+        "confidence": "Medium Confidence",
+        "classification": "Observed",
+        "evidence_id": "EV-0001",
+        "line": 85,
+        "summary": "Request targets a sensitive path (config, VCS, backup, admin tooling)."
+      },
+      {
+        "timestamp": "2026-11-03T10:00:04+00:00",
+        "phase": "Reconnaissance",
+        "finding_id": "F-0006",
+        "type": "sensitive_path_access",
+        "ip": "198.51.100.23",
+        "severity": "Low",
+        "confidence": "Medium Confidence",
+        "classification": "Observed",
+        "evidence_id": "EV-0001",
+        "line": 86,
+        "summary": "Request targets a sensitive path (config, VCS, backup, admin tooling)."
+      },
+      {
+        "timestamp": "2026-11-03T10:10:00+00:00",
+        "phase": "Reconnaissance",
+        "finding_id": "F-0007",
+        "type": "scanner_user_agent",
+        "ip": "198.51.100.23",
+        "severity": "Medium",
+        "confidence": "High Confidence",
+        "classification": "Observed",
+        "evidence_id": "EV-0001",
+        "line": 113,
+        "summary": "User-Agent matches known scanning/attack tool 'sqlmap' (first occurrence)."
+      },
+      {
+        "timestamp": "2026-11-03T10:10:00+00:00",
+        "phase": "Initial Access / Exploitation",
+        "finding_id": "F-0008",
+        "type": "sql_injection_attempt",
+        "ip": "198.51.100.23",
+        "severity": "High",
+        "confidence": "Medium Confidence",
+        "classification": "Observed",
+        "evidence_id": "EV-0001",
+        "line": 113,
+        "summary": "Request contains SQL injection patterns."
+      },
+      {
+        "timestamp": "2026-11-03T10:10:20+00:00",
+        "phase": "Initial Access / Exploitation",
+        "finding_id": "F-0009",
+        "type": "sql_injection_attempt",
+        "ip": "198.51.100.23",
+        "severity": "High",
+        "confidence": "Medium Confidence",
+        "classification": "Observed",
+        "evidence_id": "EV-0001",
+        "line": 114,
+        "summary": "Request contains SQL injection patterns."
+      },
+      {
+        "timestamp": "2026-11-03T10:10:40+00:00",
+        "phase": "Initial Access / Exploitation",
+        "finding_id": "F-0010",
+        "type": "path_traversal_attempt",
+        "ip": "198.51.100.23",
+        "severity": "High",
+        "confidence": "High Confidence",
+        "classification": "Observed",
+        "evidence_id": "EV-0001",
+        "line": 115,
+        "summary": "Request contains path traversal patterns."
+      },
+      {
+        "timestamp": "2026-11-03T10:15:00+00:00",
+        "phase": "Authentication",
+        "finding_id": "F-0011",
+        "type": "bruteforce_login_attempts",
+        "ip": "198.51.100.23",
+        "severity": "High",
+        "confidence": "High Confidence",
+        "classification": "Observed",
+        "evidence_id": "EV-0001",
+        "line": 119,
+        "summary": "8 failed login responses (401/403) from one IP; >= 5 within 300s."
+      },
+      {
+        "timestamp": "2026-11-03T10:16:10+00:00",
+        "phase": "Authentication",
+        "finding_id": "F-0012",
+        "type": "possible_login_success_after_failures",
+        "ip": "198.51.100.23",
+        "severity": "High",
+        "confidence": "Medium Confidence",
+        "classification": "Inferred",
+        "evidence_id": "EV-0001",
+        "line": 128,
+        "summary": "Login-path POST returned 302 after 8 failures from the same IP."
+      },
+      {
+        "timestamp": "2026-11-03T10:19:10+00:00",
+        "phase": "Execution / Persistence indicator",
+        "finding_id": "F-0013",
+        "type": "possible_web_shell",
+        "ip": "198.51.100.23",
+        "severity": "Critical",
+        "confidence": "Medium Confidence",
+        "classification": "Inferred",
+        "evidence_id": "EV-0001",
+        "line": 131,
+        "summary": "Script request with command-execution parameters or web-shell-like name."
+      },
+      {
+        "timestamp": "2026-11-03T10:19:40+00:00",
+        "phase": "Execution / Persistence indicator",
+        "finding_id": "F-0014",
+        "type": "possible_web_shell",
+        "ip": "198.51.100.23",
+        "severity": "Critical",
+        "confidence": "Medium Confidence",
+        "classification": "Inferred",
+        "evidence_id": "EV-0001",
+        "line": 132,
+        "summary": "Script request with command-execution parameters or web-shell-like name."
+      },
+      {
+        "timestamp": "2026-11-03T10:30:00+00:00",
+        "phase": "Reconnaissance",
+        "finding_id": "F-0015",
+        "type": "ssh_user_enumeration",
+        "ip": "198.51.100.23",
+        "severity": "Medium",
+        "confidence": "Medium Confidence",
+        "classification": "Observed",
+        "evidence_id": "EV-0002",
+        "line": 5,
+        "summary": "4 distinct non-existent usernames tried from one IP (admin, oracle, test, ubuntu)."
+      },
+      {
+        "timestamp": "2026-11-03T10:30:00+00:00",
+        "phase": "Authentication",
+        "finding_id": "F-0016",
+        "type": "ssh_bruteforce_attempts",
+        "ip": "198.51.100.23",
+        "severity": "High",
+        "confidence": "High Confidence",
+        "classification": "Observed",
+        "evidence_id": "EV-0002",
+        "line": 6,
+        "summary": "10 failed SSH authentications from one IP; >= 5 within 300s."
+      },
+      {
+        "timestamp": "2026-11-03T10:30:40+00:00",
+        "phase": "Confirmed Access",
+        "finding_id": "F-0018",
+        "type": "ssh_login_success_after_failures",
+        "ip": "198.51.100.23",
+        "severity": "High",
+        "confidence": "High Confidence",
+        "classification": "Observed",
+        "evidence_id": "EV-0002",
+        "line": 19,
+        "summary": "sshd logged a SUCCESSFUL login for 'deploy' (password) after 10 failed attempts from the same IP."
+      }
+    ],
+    "iocs": {
+      "ip_addresses": [
+        {
+          "value": "198.51.100.23",
+          "findings": [
+            "F-0001",
+            "F-0002",
+            "F-0003",
+            "F-0004",
+            "F-0005",
+            "F-0006",
+            "F-0007",
+            "F-0008",
+            "F-0009",
+            "F-0010",
+            "F-0011",
+            "F-0012",
+            "F-0013",
+            "F-0014",
+            "F-0015",
+            "F-0016",
+            "F-0017",
+            "F-0018"
+          ]
+        }
+      ],
+      "user_agents": [
+        {
+          "value": "Mozilla/5.0 (X11; Linux x86_64) Firefox/126.0",
+          "findings": [
+            "F-0011",
+            "F-0012",
+            "F-0013",
+            "F-0014"
+          ]
+        },
+        {
+          "value": "Mozilla/5.00 (Nikto/2.5.0) (Evasions:None) (Test:Port Scanner)",
+          "findings": [
+            "F-0001",
+            "F-0002",
+            "F-0003",
+            "F-0004",
+            "F-0005",
+            "F-0006"
+          ]
+        },
+        {
+          "value": "sqlmap/1.8",
+          "findings": [
+            "F-0007",
+            "F-0008",
+            "F-0009",
+            "F-0010"
+          ]
+        }
+      ],
+      "urls": [
+        {
+          "value": "/.env",
+          "findings": [
+            "F-0004"
+          ]
+        },
+        {
+          "value": "/.git/config",
+          "findings": [
+            "F-0005"
+          ]
+        },
+        {
+          "value": "/admin",
+          "findings": [
+            "F-0001",
+            "F-0002"
+          ]
+        },
+        {
+          "value": "/backup",
+          "findings": [
+            "F-0003"
+          ]
+        },
+        {
+          "value": "/download.php",
+          "findings": [
+            "F-0010"
+          ]
+        },
+        {
+          "value": "/phpmyadmin/",
+          "findings": [
+            "F-0006"
+          ]
+        },
+        {
+          "value": "/products.php",
+          "findings": [
+            "F-0007",
+            "F-0008",
+            "F-0009"
+          ]
+        },
+        {
+          "value": "/wp-content/uploads/2026/11/shell.php",
+          "findings": [
+            "F-0013",
+            "F-0014"
+          ]
+        },
+        {
+          "value": "/wp-login.php",
+          "findings": [
+            "F-0011",
+            "F-0012"
+          ]
+        }
+      ],
+      "note": "An IP address does not identify a person; geolocation/ASN enrichment is not part of the MVP."
+    },
+    "remediation": [
+      {
+        "priority": "Immediate",
+        "action": "Preserve evidence first: snapshot disk/memory and keep the original logs before any cleanup.",
+        "findings": []
+      },
+      {
+        "priority": "Immediate",
+        "action": "Disable script execution in upload directories; compare web root against a clean baseline.",
+        "findings": [
+          "F-0013",
+          "F-0014"
+        ]
+      },
+      {
+        "priority": "Immediate",
+        "action": "Force a password reset for the affected account(s) and review activity after the login time.",
+        "findings": [
+          "F-0012"
+        ]
+      },
+      {
+        "priority": "Immediate",
+        "action": "Isolate the host from the network if a web shell is suspected; locate and hash the file, do not execute it.",
+        "findings": [
+          "F-0013",
+          "F-0014"
+        ]
+      },
+      {
+        "priority": "Immediate",
+        "action": "Terminate the session, reset the credentials and review ~/.ssh/authorized_keys, cron jobs, new users and services.",
+        "findings": [
+          "F-0018"
+        ]
+      },
+      {
+        "priority": "Immediate",
+        "action": "Treat as a potential compromise: extend the investigation to other hosts and block the IP after preserving evidence (the IP may be shared).",
+        "findings": [
+          "F-0017"
+        ]
+      },
+      {
+        "priority": "High",
+        "action": "Disable SSH password authentication (key-only), add fail2ban or equivalent rate limiting.",
+        "findings": [
+          "F-0016"
+        ]
+      },
+      {
+        "priority": "High",
+        "action": "Enable rate limiting / lockout and MFA on the login endpoint.",
+        "findings": [
+          "F-0011"
+        ]
+      },
+      {
+        "priority": "High",
+        "action": "Normalize and validate file parameters; restrict the web user's filesystem access (least privilege).",
+        "findings": [
+          "F-0010"
+        ]
+      },
+      {
+        "priority": "High",
+        "action": "Review commands and file changes made by that account after the login time (shell history, auditd).",
+        "findings": [
+          "F-0018"
+        ]
+      },
+      {
+        "priority": "High",
+        "action": "Review database logs for the same timeframe to see whether queries executed.",
+        "findings": [
+          "F-0008",
+          "F-0009"
+        ]
+      },
+      {
+        "priority": "High",
+        "action": "Review the targeted endpoint; use parameterized queries and input validation; add a WAF rule.",
+        "findings": [
+          "F-0008",
+          "F-0009"
+        ]
+      },
+      {
+        "priority": "High",
+        "action": "Rotate secrets reachable by the web server user (DB passwords, API keys).",
+        "findings": [
+          "F-0013",
+          "F-0014"
+        ]
+      },
+      {
+        "priority": "Medium",
+        "action": "Block known scanner User-Agents at the edge and monitor the same IP for follow-up activity.",
+        "findings": [
+          "F-0002",
+          "F-0007"
+        ]
+      },
+      {
+        "priority": "Medium",
+        "action": "Rate-limit or block the source after preserving evidence; verify no sensitive files are exposed.",
+        "findings": [
+          "F-0001"
+        ]
+      },
+      {
+        "priority": "Medium",
+        "action": "Remove backups, VCS folders and config files from the web root; restrict admin tools by IP.",
+        "findings": [
+          "F-0003",
+          "F-0004",
+          "F-0005",
+          "F-0006"
+        ]
+      },
+      {
+        "priority": "Medium",
+        "action": "Remove unused accounts and restrict allowed users with AllowUsers/AllowGroups.",
+        "findings": [
+          "F-0015"
+        ]
+      },
+      {
+        "priority": "Medium",
+        "action": "Restrict SSH exposure by source IP / VPN.",
+        "findings": [
+          "F-0016"
+        ]
+      }
+    ],
+    "graph": {
+      "rows": [
+        {
+          "ip": "198.51.100.23",
+          "stages": [
+            {
+              "phase": "Reconnaissance",
+              "count": 8,
+              "first_ts": "2026-11-03T10:00:00+00:00",
+              "severity": "Medium",
+              "types": [
+                "content_enumeration",
+                "scanner_user_agent",
+                "sensitive_path_access",
+                "ssh_user_enumeration"
+              ],
+              "findings": [
+                "F-0001",
+                "F-0002",
+                "F-0003",
+                "F-0004",
+                "F-0005",
+                "F-0006"
+              ]
+            },
+            {
+              "phase": "Initial Access / Exploitation",
+              "count": 3,
+              "first_ts": "2026-11-03T10:10:00+00:00",
+              "severity": "High",
+              "types": [
+                "path_traversal_attempt",
+                "sql_injection_attempt"
+              ],
+              "findings": [
+                "F-0008",
+                "F-0009",
+                "F-0010"
+              ]
+            },
+            {
+              "phase": "Authentication",
+              "count": 3,
+              "first_ts": "2026-11-03T10:15:00+00:00",
+              "severity": "High",
+              "types": [
+                "bruteforce_login_attempts",
+                "possible_login_success_after_failures",
+                "ssh_bruteforce_attempts"
+              ],
+              "findings": [
+                "F-0011",
+                "F-0012",
+                "F-0016"
+              ]
+            },
+            {
+              "phase": "Execution / Persistence indicator",
+              "count": 2,
+              "first_ts": "2026-11-03T10:19:10+00:00",
+              "severity": "Critical",
+              "types": [
+                "possible_web_shell"
+              ],
+              "findings": [
+                "F-0013",
+                "F-0014"
+              ]
+            },
+            {
+              "phase": "Confirmed Access",
+              "count": 1,
+              "first_ts": "2026-11-03T10:30:40+00:00",
+              "severity": "High",
+              "types": [
+                "ssh_login_success_after_failures"
+              ],
+              "findings": [
+                "F-0018"
+              ]
+            }
+          ],
+          "rank": [
+            4,
+            17
+          ]
+        }
+      ],
+      "omitted_ips": 0
+    }
+  },
+  "ai_investigation": null,
+  "limitations": [
+    "Web access logs show requests and response codes only; they cannot prove that an exploit or login succeeded.",
+    "An IP address does not identify a person. Geolocation and VPN/proxy status are not assessed in this version.",
+    "Findings are rule-based and may include false positives or miss unknown techniques.",
+    "Only Apache/Nginx access logs and SSH auth logs are analyzed in this version; other evidence types are listed as unsupported.",
+    "Classic syslog timestamps have no year or timezone: the year comes from --year or the file modification time and times are treated as UTC."
+  ]
+}
