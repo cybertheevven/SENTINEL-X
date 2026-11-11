@@ -19,6 +19,13 @@ def types(fs):
 
 
 class DetectionTests(unittest.TestCase):
+    def test_ssh_detection_thresholds_must_be_positive_integers(self):
+        for key in ("ssh_bruteforce_threshold", "ssh_bruteforce_window_s", "ssh_enum_threshold"):
+            for value in (0, -1):
+                with self.subTest(key=key, value=value):
+                    with self.assertRaisesRegex(ValueError, "positive integer"):
+                        AuthDetector({key: value})
+
     def test_benign_traffic_has_no_findings(self):
         fs = run([ev(path="/"), ev(path="/about"), ev(path="/products.php?id=3")])
         self.assertEqual(fs, [])
