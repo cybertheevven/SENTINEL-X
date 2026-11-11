@@ -14,6 +14,10 @@ DEFAULTS = {"ssh_bruteforce_threshold": 5, "ssh_bruteforce_window_s": 300, "ssh_
 class AuthDetector:
     def __init__(self, config: dict | None = None):
         self.cfg = {**DEFAULTS, **(config or {})}
+        for key in ("ssh_bruteforce_threshold", "ssh_bruteforce_window_s", "ssh_enum_threshold"):
+            value = self.cfg[key]
+            if isinstance(value, bool) or not isinstance(value, int) or value < 1:
+                raise ValueError(f"{key} must be a positive integer")
 
     @staticmethod
     def _f(ev: AuthEvent, ftype, sev, conf, cls, desc, **details) -> Finding:

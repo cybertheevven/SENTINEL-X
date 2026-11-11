@@ -15,6 +15,17 @@ from sentinel_x.demo import synthetic
 from sentinel_x.reporting import html_report, json_report, pdf_report
 
 
+def positive_int(value: str) -> int:
+    """argparse type that accepts positive integers only."""
+    try:
+        parsed = int(value)
+    except (TypeError, ValueError) as exc:
+        raise argparse.ArgumentTypeError("must be a positive integer") from exc
+    if parsed < 1:
+        raise argparse.ArgumentTypeError("must be a positive integer")
+    return parsed
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="sentinel-x",
                                 description="SENTINEL-X - AI digital forensics & incident investigation (defensive, read-only).")
@@ -33,8 +44,8 @@ def build_parser() -> argparse.ArgumentParser:
 
     an = sub.add_parser("analyze", help="Run automated analysis")
     an.add_argument("--case", required=True)
-    an.add_argument("--bruteforce-threshold", type=int)
-    an.add_argument("--enum-404-threshold", type=int)
+    an.add_argument("--bruteforce-threshold", type=positive_int)
+    an.add_argument("--enum-404-threshold", type=positive_int)
     an.add_argument("--year", type=int, help="Year to assume for syslog timestamps without a year (default: file mtime year)")
 
     ai = sub.add_parser("ai", help="AI investigation").add_subparsers(dest="action", required=True)
@@ -106,9 +117,9 @@ def _dispatch(args, home: Path) -> int:
 
     if args.command == "analyze":
         cfg = {}
-        if args.bruteforce_threshold:
+        if args.bruteforce_threshold is not None:
             cfg["bruteforce_threshold"] = args.bruteforce_threshold
-        if args.enum_404_threshold:
+        if args.enum_404_threshold is not None:
             cfg["enum_404_threshold"] = args.enum_404_threshold
         if args.year:
             cfg["auth_year"] = args.year

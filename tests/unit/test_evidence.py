@@ -49,6 +49,39 @@ class EvidenceTests(unittest.TestCase):
         self.assertFalse(res[0]["ok"])
         self.assertIn("MISMATCH", res[0]["detail"])
 
+    def test_open_rejects_invalid_case_names(self):
+        for name in ("../outside", "/tmp/outside", "nested/child", "bad\\nname"):
+            with self.subTest(name=name):
+                with self.assertRaises(CaseError):
+                    Case.open(self.root / "cases", name)
+
+    def test_manifest_working_copy_cannot_escape_case_directory(self):
+        store = EvidenceStore(self.case.dir)
+        entry = store.add_file(self.src)
+        manifest = store.load()
+        manifest["evidence"][0]["working_copy"] = "../outside.log"
+        store._save(manifest)
+        result = store.verify()[0]
+        self.assertFalse(result["ok"])
+        self.assertIn("relative path", result["detail"])
+        with self.assertRaises(EvidenceError):
+            store.path_of(manifest["evidence"][0])
+
+    def test_manifest_symlink_cannot_escape_case_directory(self):
+        store = EvidenceStore(self.case.dir)
+        entry = store.add_file(self.src)
+        outside = self.root / "outside"
+        outside.mkdir()
+        (outside / "secret.log").write_text("not case evidence", encoding="utf-8")
+        (self.case.dir / "escape").symlink_to(outside, target_is_directory=True)
+        entry["working_copy"] = "escape/secret.log"
+        with self.assertRaises(EvidenceError):
+            store.path_of(entry)
+        manifest = store.load()
+        manifest["evidence"][0]["working_copy"] = "escape/secret.log"
+        store._save(manifest)
+        self.assertFalse(store.verify()[0]["ok"])
+
     def test_missing_file_and_bad_case_name(self):
         with self.assertRaises(EvidenceError):
             EvidenceStore(self.case.dir).add_file(self.root / "nope.log")

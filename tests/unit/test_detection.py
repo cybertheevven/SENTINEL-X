@@ -2,6 +2,8 @@ import sys, unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from sentinel_x.analyzers.detection import Detector
+from sentinel_x.analyzers.auth_detection import AuthDetector
+from sentinel_x.cli.main import build_parser
 from sentinel_x.investigation import initial_access
 from sentinel_x.parsers import web
 from sentinel_x.timeline import builder
@@ -19,6 +21,28 @@ def types(fs):
 
 
 class DetectionTests(unittest.TestCase):
+    def test_detection_thresholds_must_be_positive_integers(self):
+        for key in ("bruteforce_threshold", "enum_404_threshold", "bruteforce_window_s", "enum_404_window_s"):
+            for value in (0, -1):
+                with self.subTest(key=key, value=value):
+                    with self.assertRaisesRegex(ValueError, "positive integer"):
+                        Detector({key: value})
+
+    def test_cli_rejects_non_positive_detection_thresholds(self):
+        parser = build_parser()
+        for option in ("--bruteforce-threshold", "--enum-404-threshold"):
+            for value in ("0", "-2"):
+                with self.subTest(option=option, value=value):
+                    with self.assertRaises(SystemExit):
+                        parser.parse_args(["analyze", "--case", "CASE", option, value])
+
+    def test_ssh_detection_thresholds_must_be_positive_integers(self):
+        for key in ("ssh_bruteforce_threshold", "ssh_bruteforce_window_s", "ssh_enum_threshold"):
+            for value in (0, -1):
+                with self.subTest(key=key, value=value):
+                    with self.assertRaisesRegex(ValueError, "positive integer"):
+                        AuthDetector({key: value})
+
     def test_benign_traffic_has_no_findings(self):
         fs = run([ev(path="/"), ev(path="/about"), ev(path="/products.php?id=3")])
         self.assertEqual(fs, [])

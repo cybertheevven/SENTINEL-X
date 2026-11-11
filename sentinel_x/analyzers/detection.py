@@ -62,6 +62,11 @@ def _first_window(times, threshold: int, window: timedelta):
 class Detector:
     def __init__(self, config: dict | None = None):
         self.cfg = {**DEFAULTS, **(config or {})}
+        for key in ("bruteforce_threshold", "enum_404_threshold",
+                    "bruteforce_window_s", "enum_404_window_s"):
+            value = self.cfg[key]
+            if isinstance(value, bool) or not isinstance(value, int) or value < 1:
+                raise ValueError(f"{key} must be a positive integer")
         self._raw: list[Finding] = []
 
     def _add(self, ev: LogEvent, ftype: str, severity: str, confidence: str,
