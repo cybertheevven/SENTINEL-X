@@ -11,7 +11,7 @@ import os
 import shutil
 import stat
 from datetime import datetime, timezone
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 
 
 def utcnow() -> str:
@@ -109,10 +109,35 @@ class EvidenceStore:
                 skipped.append(str(f))
         return added, skipped
 
+    def _working_copy_path(self, entry: dict) -> Path:
+        """Resolve a manifest path and ensure it remains inside this case directory."""
+        value = entry.get("working_copy") if isinstance(entry, dict) else None
+        if not isinstance(value, str) or not value:
+            raise EvidenceError("Invalid manifest working_copy path")
+
+        relative = Path(value)
+        windows_path = PureWindowsPath(value)
+        if (relative.is_absolute() or windows_path.is_absolute()
+                or ".." in relative.parts or ".." in windows_path.parts):
+            raise EvidenceError("Manifest working_copy must be a relative path inside the case directory")
+
+        root = self.case_dir.resolve()
+        try:
+            resolved = (root / relative).resolve()
+            resolved.relative_to(root)
+        except (OSError, RuntimeError, ValueError) as exc:
+            raise EvidenceError("Manifest working_copy escapes the case directory") from exc
+        return resolved
+
     def verify(self) -> list[dict]:
         results = []
         for e in self.entries():
-            wc = self.case_dir / e["working_copy"]
+            try:
+                wc = self._working_copy_path(e)
+            except EvidenceError as exc:
+                results.append({"evidence_id": e.get("evidence_id", "unknown"),
+                                "ok": False, "detail": str(exc)})
+                continue
             if not wc.exists():
                 results.append({"evidence_id": e["evidence_id"], "ok": False, "detail": "working copy missing"})
                 continue
@@ -123,4 +148,5 @@ class EvidenceStore:
         return results
 
     def path_of(self, entry: dict) -> Path:
-        return self.case_dir / entry["working_copy"]
+        """Return a validated working-copy path confined to the case directory."""
+        return self._working_copy_path(entry)

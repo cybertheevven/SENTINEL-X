@@ -21,8 +21,15 @@ def default_home() -> Path:
     return Path(os.environ.get("SENTINEL_X_HOME", Path.home() / ".sentinel-x" / "cases"))
 
 
+def _validate_case_name(name: str) -> None:
+    """Reject names that could escape the configured cases directory."""
+    if not isinstance(name, str) or NAME_RE.fullmatch(name) is None:
+        raise CaseError("Case name must match [A-Za-z0-9._-] (max 64 chars, no leading symbol)")
+
+
 class Case:
     def __init__(self, home: str | Path, name: str):
+        _validate_case_name(name)
         self.name = name
         self.dir = Path(home) / name
         self.case_file = self.dir / "case.json"
@@ -33,8 +40,6 @@ class Case:
 
     @classmethod
     def create(cls, home: str | Path, name: str, author: str = "THEEVVEN") -> "Case":
-        if not NAME_RE.match(name):
-            raise CaseError("Case name must match [A-Za-z0-9._-] (max 64 chars, no leading symbol)")
         case = cls(home, name)
         if case.dir.exists():
             raise CaseError(f"Case already exists: {case.dir}")
