@@ -1,4 +1,4 @@
-import hashlib, json, os, stat, sys, tempfile, unittest
+import hashlib, os, stat, sys, tempfile, unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from sentinel_x.core.case import Case, CaseError
